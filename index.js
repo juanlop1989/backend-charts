@@ -1,9 +1,11 @@
 const express = require('express')
 const sequelize= require('./config/database')
 const Producto = require('./modelos/Producto')
+var cors = require('cors')
 
 const app= express();
 app.use(express.json())
+app.use(cors())
 var port = 5000;
 
 
@@ -31,7 +33,7 @@ app.get('/suma-producto-tipoProducto', async(req,resp) =>{
         const result = await Producto.findAll({
             attributes:[
                 'productType',
-                [sequelize.fn('SUM', sequelize.col('value')), 'Valor Total']
+                [sequelize.fn('SUM', sequelize.col('value')), 'Valor_Total']
             ],
             group: ["productType"]
         });
@@ -45,7 +47,7 @@ app.get('/suma-producto-tipoProducto', async(req,resp) =>{
 });
 
 
-//Calcular el valor promedio de productos por cada categoryCode
+//Calcular el Valor_Promedio de productos por cada categoryCode
 app.get('/valor-promedio-codigoCategoria', async(req,resp) =>{
 
     try {
@@ -53,7 +55,7 @@ app.get('/valor-promedio-codigoCategoria', async(req,resp) =>{
         const result = await Producto.findAll({
             attributes:[
                 'categoryCode',
-                [sequelize.fn('AVG', sequelize.col('value')), 'Valor Promedio']
+                [sequelize.fn('AVG', sequelize.col('value')), 'Valor_Promedio']
             ],
             group: ["categoryCode"]
         });
@@ -67,7 +69,7 @@ app.get('/valor-promedio-codigoCategoria', async(req,resp) =>{
 });
 
 
-//Calcular el valor promedio y la cantidad de productos por cada lineCode
+//Calcular el Valor_Promedio y la cantidad de productos por cada lineCode
 app.get('/valor-promedio-lineaCodigo', async(req,resp) =>{
 
     try {
@@ -75,7 +77,7 @@ app.get('/valor-promedio-lineaCodigo', async(req,resp) =>{
         const result = await Producto.findAll({
             attributes:[
                 'lineCode',
-                [sequelize.fn('AVG', sequelize.col('value')), 'Valor Promedio'],
+                [sequelize.fn('AVG', sequelize.col('value')), 'Valor_Promedio'],
                 [sequelize.fn('COUNT', sequelize.col('partNumber')), 'Cantidad']
             ],
             group: ["lineCode"]
